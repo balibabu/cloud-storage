@@ -2,6 +2,7 @@ import os
 from django.conf import settings
 from .models import File, Chunk
 from .tasks import upload_chunk_to_cloud # We will define this next
+from .crypto import derive_chunk_key, encrypt_chunk, decrypt_chunk
 
 def handle_incoming_file(raw_file):
     # 1. Create the File record
@@ -32,7 +33,7 @@ def handle_incoming_file(raw_file):
         with open(local_path, 'wb') as f:
             f.write(encrypted_data)
         
-        # 4. Create the Chunk record with the 'folder' logic you wanted
+        # 4. Create the Chunk record 
         chunk = Chunk.objects.create(
             file=file_obj,
             index=index,
@@ -45,3 +46,4 @@ def handle_incoming_file(raw_file):
         index += 1
 
     return file_obj.id
+

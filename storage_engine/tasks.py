@@ -2,6 +2,7 @@
 import os
 from celery import shared_task
 from .models import Chunk, UploadStatus
+from github_engine.fileHandler import FileHandler
 
 # autoretry_for catches network errors, retry_kwargs tells it to wait 5 mins (300 secs)
 @shared_task(bind=True, autoretry_for=(Exception,), retry_kwargs={'max_retries': 5, 'countdown': 300})
@@ -18,12 +19,9 @@ def upload_chunk_to_cloud(self, chunk_id):
         with open(chunk.local_path, 'rb') as f:
             encrypted_data = f.read()
 
-        # 2. UPLOAD TO CLOUD API (Mocked here)
-        # cloud_response = my_cloud_service.upload(
-        #     data=encrypted_data, 
-        #     folder=chunk.folder,
-        #     filename=f"{chunk.index}.enc"
-        # )
+        # 2. UPLOAD TO CLOUD
+        repo_name = FileHandler.upload(encrypted_data, str(chunk_id))
+        chunk.folder = repo_name
         
         # 3. Update the database on success
         chunk.status = UploadStatus.COMPLETED
