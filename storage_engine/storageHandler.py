@@ -1,8 +1,13 @@
 import os
+from dotenv import load_dotenv
 from django.conf import settings
 from .models import File, Chunk
 from .tasks import upload_chunk_to_cloud # We will define this next
 from .crypto import derive_chunk_key, encrypt_chunk, decrypt_chunk
+from github_engine.fileHandler import FileHandler
+
+load_dotenv()
+MASTER_KEY = os.getenv('MASTER_KEY')
 
 
 class StorageHandler:
@@ -51,6 +56,17 @@ class StorageHandler:
         return file_obj.id
 
     def download(file_uid):
-        file=File.objects.get(id=file_uid)
-        
-        pass
+        file = get_object_or_404(File, id=file_uid)
+
+        def file_iterator():
+            chunks=file.chunks.all()
+            for chunk in chunks:
+                key = derive_chunk_key(MASTER_KEY, str(file.id), chunk.index)
+                encrypted_data = FileHandler.download(chunk.id, chunk.folder)
+                decrypted_data = decrypt_chunk(encrypted_data, key)
+                yield decrypted_data
+
+        response = StreamingHttpResponse(file_iterator(), content_type=file.content_type)
+        response['Content-Disposition'] = f'attachment; filename="{file.title}"'
+        response['Content-Length'] = file.size
+        return response
