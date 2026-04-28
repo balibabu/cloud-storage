@@ -18,3 +18,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# cmd for running worker: celery -A config worker -l INFO --concurrency=1

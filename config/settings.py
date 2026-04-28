@@ -13,7 +13,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'github_engine',
     'storage_engine',
-    'storage'
+    'storage',
+    'common'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,4 +1,4 @@
-from github import Github
+from github import Github, Auth
 import base64
 
 class GithubManager:
