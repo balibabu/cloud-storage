@@ -29,8 +29,6 @@ class Chunk(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     file = models.ForeignKey(File, on_delete=models.CASCADE, related_name="chunks")
     index = models.PositiveIntegerField()
-    folder = models.CharField(max_length=255) 
-    local_path = models.CharField(max_length=500, null=True, blank=True) 
     status = models.CharField(max_length=20, choices=UploadStatus.choices, default=UploadStatus.PENDING)
 
     class Meta: 
@@ -39,3 +37,10 @@ class Chunk(models.Model):
 
     def __str__(self): 
         return f"{self.file.title} - Chunk {self.index} ({self.status})"
+
+
+class ChunkExecution(models.Model):
+    chunk = models.OneToOneField(Chunk, on_delete=models.CASCADE, related_name="execution")
+    local_path = models.CharField(max_length=500, null=True, blank=True)
+    retry_count = models.PositiveIntegerField(default=0)
+    last_error = models.TextField(null=True, blank=True)

@@ -20,3 +20,8 @@ class Repo(models.Model):
     @classmethod
     def get_repos(cls):
         return cls.objects.all().values_list('name', flat=True)
+
+
+class GitFile(models.Model):
+    filename = models.CharField(max_length=255, unique=True)
+    repo = models.CharField(max_length=255)

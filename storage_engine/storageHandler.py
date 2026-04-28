@@ -1,19 +1,20 @@
 import os
 from dotenv import load_dotenv
 from django.conf import settings
-from .models import File, Chunk
-from .tasks import upload_chunk_to_cloud # We will define this next
+from .models import File, Chunk, ChunkExecution
+from .tasks import upload_chunk_to_cloud
 from .crypto import derive_chunk_key, encrypt_chunk, decrypt_chunk
 from github_engine.fileHandler import FileHandler
 
 load_dotenv()
-MASTER_KEY = os.getenv('MASTER_KEY')
+MASTER_KEY = os.getenv('MASTER_KEY').encode("utf-8")
 FILE_SIZE_LIMIT = int(os.getenv('FILE_SIZE_LIMIT'))
 
 
 class StorageHandler:
 
     def upload(raw_file):
+        print('here-2')
         file_obj = File.objects.create(title=raw_file.name, size=raw_file.size, content_type=raw_file.content_type)
         temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp_chunks', str(file_obj.id))
         os.makedirs(temp_dir, exist_ok=True)
@@ -25,7 +26,8 @@ class StorageHandler:
             encrypted_data = encrypt_chunk(chunk_data, key)
             local_path = os.path.join(temp_dir, f"{index}.enc")
             with open(local_path, 'wb') as f: f.write(encrypted_data)
-            chunk = Chunk.objects.create(file=file_obj, index=index, local_path=local_path)
+            chunk = Chunk.objects.create(file=file_obj, index=index)
+            ChunkExecution.objects.create(chunk=chunk, local_path=local_path)
             upload_chunk_to_cloud.delay(chunk.id)
             index += 1
         return file_obj.id
@@ -36,7 +38,7 @@ class StorageHandler:
             chunks=file.chunks.all()
             for chunk in chunks:
                 key = derive_chunk_key(MASTER_KEY, str(file.id), chunk.index)
-                encrypted_data = FileHandler.download(str(chunk.id), chunk.folder)
+                encrypted_data = FileHandler.download(str(chunk.id))
                 decrypted_data = decrypt_chunk(encrypted_data, key)
                 yield decrypted_data
 

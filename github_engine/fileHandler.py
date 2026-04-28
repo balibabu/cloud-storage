@@ -1,5 +1,6 @@
 from .repoManager import RepoManager
 from .githubManager import GithubManager
+from .models import GitFile
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -16,9 +17,10 @@ class FileHandler:
         gm.upload_file(file_content, file_uid, rname)
         gm.close_connection()
         RepoManager.add_size(rname, size)
-        return rname
+        GitFile.objects.create(repo=rname,filename=file_uid)
 
-    def download(file_uid, repo_name):
+    def download(file_uid):
+        file=GitFile.objects.get(filename=file_uid)
         gm = GithubManager(TOKEN)
-        file_content = gm.download_file(file_uid, repo_name)
+        file_content = gm.download_file(file_uid, file.repo)
         return file_content
