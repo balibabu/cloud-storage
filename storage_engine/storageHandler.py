@@ -16,11 +16,11 @@ FILE_SIZE_LIMIT = int(os.getenv('FILE_SIZE_LIMIT'))
 
 class StorageHandler:
 
-    def upload(raw_file):
+    def upload(raw_file, chunk_size=FILE_SIZE_LIMIT):
         file_obj = File.objects.create(title=raw_file.name, size=raw_file.size, content_type=raw_file.content_type)
         temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp_chunks')
         os.makedirs(temp_dir, exist_ok=True)
-        index, chunk_size = 0, FILE_SIZE_LIMIT
+        index = 0
         while True:
             chunk_data = raw_file.read(chunk_size)
             if not chunk_data: break
