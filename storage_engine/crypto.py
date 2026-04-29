@@ -21,3 +21,10 @@ def decrypt_chunk(encrypted_data: bytes, key: bytes) -> bytes:
     ciphertext = encrypted_data[12:]
     aesgcm = AESGCM(key)
     return aesgcm.decrypt(nonce, ciphertext, None)
+
+def checksum(data: bytes, chunk_size=1048576): # 1MB
+    '''calculate this to check the duplicacy of a file'''
+    h = hashlib.sha1()
+    while chunk := data.read(chunk_size): 
+        h.update(chunk)
+    return h.hexdigest()

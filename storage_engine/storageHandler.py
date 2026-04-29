@@ -6,7 +6,7 @@ from .tasks import upload_chunk_to_cloud
 from .crypto import derive_chunk_key, encrypt_chunk, decrypt_chunk
 from github_engine.fileHandler import FileHandler
 from django.shortcuts import get_object_or_404
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponse
 
 
 load_dotenv()
@@ -36,6 +36,7 @@ class StorageHandler:
 
     def download(file_uid):
         file = get_object_or_404(File, id=file_uid)
+        if file.status != UploadStatus.COMPLETED: return HttpResponse("File is not ready for download.", status=400)
         def file_iterator():
             chunks=file.chunks.all()
             for chunk in chunks:
