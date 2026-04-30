@@ -13,8 +13,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'github_engine',
     'storage_engine',
-    'storage',
-    'common'
+    'common',
+    'filespace',
+    'accounts'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -29,7 +30,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,3 +71,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = BASE_DIR
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+LOGIN_URL = 'accounts:login'              
+LOGIN_REDIRECT_URL = 'filespace:index'    
+LOGOUT_REDIRECT_URL = 'accounts:login'  

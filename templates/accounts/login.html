@@ -1,0 +1,12 @@
+{% extends 'filespace/base.html' %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-sm border mt-10">
+    <h2 class="text-2xl font-bold mb-4">Login</h2>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Login</button>
+    </form>
+    <p class="mt-4 text-sm">Don't have an account? <a href="{% url 'accounts:register' %}" class="text-blue-600">Register</a></p>
+</div>
+{% endblock %}
