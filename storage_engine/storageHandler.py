@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from django.conf import settings
-from .models import File, Chunk, ChunkExecution
+from .models import File, Chunk, ChunkExecution, UploadStatus
 from .tasks import upload_chunk_to_cloud
 from .crypto import derive_chunk_key, encrypt_chunk, decrypt_chunk
 from github_engine.fileHandler import FileHandler
