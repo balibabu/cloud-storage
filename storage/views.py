@@ -22,7 +22,8 @@ def index(request):
 @api_view(['POST'])
 def upload_file(request):
     raw_file = request.FILES["file"]
-    file_id = StorageHandler.upload(raw_file)
+    if raw_file.content_type.startswith("video/"): file_id = StorageHandler.upload(raw_file, 1048576)
+    else: file_id = StorageHandler.upload(raw_file)
     return redirect("index")
 
 
