@@ -69,7 +69,7 @@
                 <span class="text-[9px] font-bold text-yellow-600 bg-yellow-50 px-1.5 py-0.5 rounded uppercase">{{ userfile.file.status }}</span>
             {% endif %}
 
-            <a href="{% url 'filespace:download_file' userfile.id %}" class="text-blue-500 hover:text-blue-700 transition">
+            <a href="{% url 'filespace:download_file' userfile.id %}" target="_blank" class="text-blue-500 hover:text-blue-700 transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             </a>
         </div>
