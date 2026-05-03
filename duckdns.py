@@ -19,7 +19,7 @@ def get_ipv6():
 ip_address = get_ipv6()
 
 if ip_address:
-    url = f"https://duckdns.org/update/{domain}/{token}/{ip_address}"
+    url = f"https://www.duckdns.org/update?domains={domain}&token={token}&ipv6={ip_address}"
 else:
     url = f"https://duckdns.org/update/{domain}/{token}"
 
