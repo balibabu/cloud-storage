@@ -14,7 +14,6 @@ def get_ipv6():
         return s.getsockname()[0]
     finally:
         s.close()
-        return ''
 
 ip_address = get_ipv6()
 
