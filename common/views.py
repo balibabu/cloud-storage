@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
-from django.http import HttpResponse
+from django.shortcuts import render
 
 @api_view(['GET'])
 def index(request):
-    return HttpResponse("<h2>Hello World, I am balibabu</h2>")
+    return render(request, 'common/home.html')

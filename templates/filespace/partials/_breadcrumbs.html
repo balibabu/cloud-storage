@@ -1,0 +1,9 @@
+<div class="flex items-center space-x-2 text-sm text-gray-500 mb-6 overflow-x-auto whitespace-nowrap">
+    <a href="{% url 'filespace:index' %}" class="hover:text-blue-600 font-medium">Home</a>
+    {% for crumb in breadcrumbs %}
+        <span>/</span>
+        <a href="{% url 'filespace:folder' crumb.id %}" class="hover:text-blue-600 font-medium">
+            {{ crumb.name }}
+        </a>
+    {% endfor %}
+</div>

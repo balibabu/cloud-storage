@@ -1,0 +1,49 @@
+<script>
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder_id', '{{ current_folder.id|default_if_none:"" }}');
+    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+    const xhr = new XMLHttpRequest();
+
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    progressContainer.classList.remove('hidden');
+    progressText.classList.remove('hidden');
+
+    xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            progressBar.style.width = percent + '%';
+            progressText.innerText = percent + '%';
+
+            if (percent === 100) {
+                progressText.innerText = "Processing on server...";
+            }
+        }
+    });
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            progressText.innerText = "Complete!";
+            window.location.reload();
+        } else {
+            alert('Upload failed: ' + xhr.statusText);
+            progressContainer.classList.add('hidden');
+            progressText.classList.add('hidden');
+        }
+    };
+
+    xhr.open('POST', "{% url 'filespace:upload_file' %}", true);
+    xhr.send(formData);
+
+    fileInput.value = '';
+}
+</script>

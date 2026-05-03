@@ -46,6 +46,6 @@ class StorageHandler:
                 yield decrypted_data
 
         response = StreamingHttpResponse(file_iterator(), content_type=file.content_type)
-        response['Content-Disposition'] = f'attachment; filename="{file.title}"'
+        response['Content-Disposition'] = f'inline; filename="{file.title}"'
         response['Content-Length'] = file.size
         return response

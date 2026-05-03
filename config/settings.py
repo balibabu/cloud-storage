@@ -1,7 +1,12 @@
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-4wcku4cuba59qwx49+t-!jourp#0#&h&1!o##!gl5ps%(l%^uz'
-DEBUG = True
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DJANGO_DEBUG')=='True'
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',

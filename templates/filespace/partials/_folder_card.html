@@ -1,0 +1,9 @@
+<a href="{% url 'filespace:folder' folder.id %}" 
+   class="block bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition flex items-center space-x-3">
+    
+    <svg class="w-8 h-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
+    </svg>
+
+    <span class="font-medium text-gray-700 truncate">{{ folder.name }}</span>
+</a>

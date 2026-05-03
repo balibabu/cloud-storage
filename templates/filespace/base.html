@@ -9,16 +9,13 @@
 <body class="bg-gray-50 text-gray-800">
     <!-- Navbar -->
     <nav class="bg-white shadow-sm border-b px-4 py-3 flex justify-between items-center">
-        <a href="{% url 'filespace:index' %}" class="text-xl font-bold text-blue-600">CloudDrive</a>
+        <a href="{% url 'filespace:index' %}" class="text-xl font-bold text-blue-600">SkyVault</a>
         <div>
            {% if user.is_authenticated %}
             <span class="mr-4 text-sm font-medium">Hello, {{ user.username }}</span>
-
             <form action="{% url 'accounts:logout' %}" method="post" class="inline">
                 {% csrf_token %}
-                <button type="submit" class="text-sm text-red-500 hover:underline">
-                    Logout
-                </button>
+                <button type="submit" class="text-sm text-red-500 hover:underline">Logout</button>
             </form>
         {% else %}
             <a href="{% url 'accounts:login' %}" class="text-sm text-blue-500 hover:underline">Login</a>

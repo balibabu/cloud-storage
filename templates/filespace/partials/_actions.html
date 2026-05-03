@@ -1,0 +1,28 @@
+<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+
+    <!-- Create Folder -->
+    <form action="{% url 'filespace:create_folder' %}" method="POST" class="flex space-x-2">
+        {% csrf_token %}
+        <input type="hidden" name="parent_id" value="{{ current_folder.id|default_if_none:'' }}">
+        <input type="text" name="name" placeholder="New Folder Name" required 
+               class="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 w-full sm:w-auto">
+        <button type="submit" class="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-200 border">
+            Create
+        </button>
+    </form>
+
+    <!-- Upload -->
+    <div class="flex flex-col sm:items-end w-full sm:w-auto">
+        <input type="file" id="fileInput" class="hidden" onchange="uploadFile()">
+        <button onclick="document.getElementById('fileInput').click()" 
+                class="bg-blue-600 text-white px-5 py-2 rounded text-sm font-medium hover:bg-blue-700 w-full sm:w-auto">
+            Upload File
+        </button>
+
+        <div id="progressContainer" class="hidden w-full sm:w-48 mt-2 h-2.5 bg-gray-200 rounded-full overflow-hidden">
+            <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+        <p id="progressText" class="hidden text-xs text-gray-500 mt-1">0%</p>
+    </div>
+
+</div>

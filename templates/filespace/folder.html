@@ -1,0 +1,27 @@
+{% extends 'filespace/base.html' %}
+
+{% block content %}
+
+{% include 'filespace/partials/_breadcrumbs.html' %}
+
+{% include 'filespace/partials/_actions.html' %}
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+    {% for folder in folders %}
+        {% include 'filespace/partials/_folder_card.html' %}
+    {% endfor %}
+
+    {% for userfile in files %}
+        {% include 'filespace/partials/_file_card.html' %}
+    {% endfor %}
+
+    {% if not folders and not files %}
+        {% include 'filespace/partials/_empty_state.html' %}
+    {% endif %}
+
+</div>
+
+{% include 'filespace/partials/_upload_script.html' %}
+
+{% endblock %}
