@@ -14,9 +14,7 @@ class File(models.Model):
     size = models.PositiveBigIntegerField()
     content_type = models.CharField(max_length=128, default='application/octet-stream')
     status = models.CharField(max_length=20, choices=UploadStatus.choices, default=UploadStatus.PENDING)
-
-    def __str__(self): 
-        return self.title
+    def __str__(self): return self.title
 
     def check_and_update_status(self):
         """Helper to mark the whole file as completed if all chunks are uploaded."""
@@ -30,13 +28,11 @@ class Chunk(models.Model):
     file = models.ForeignKey(File, on_delete=models.CASCADE, related_name="chunks")
     index = models.PositiveIntegerField()
     status = models.CharField(max_length=20, choices=UploadStatus.choices, default=UploadStatus.PENDING)
+    def __str__(self): return f"{self.file.title}-C[{self.index}]-({self.status})"
 
     class Meta: 
         unique_together = ('file', 'index')
         ordering = ['index']
-
-    def __str__(self): 
-        return f"{self.file.title} - Chunk {self.index} ({self.status})"
 
 
 class ChunkExecution(models.Model):
@@ -44,3 +40,4 @@ class ChunkExecution(models.Model):
     local_path = models.CharField(max_length=500, null=True, blank=True)
     retry_count = models.PositiveIntegerField(default=0)
     last_error = models.TextField(null=True, blank=True)
+    def __str__(self): return f"{self.chunk.file.title}-C[{self.chunk.index}] (retry:{self.retry_count})"
