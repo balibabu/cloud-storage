@@ -3,4 +3,9 @@ from django.shortcuts import render
 
 @api_view(['GET'])
 def index(request):
-    return render(request, 'common/home.html')
+    try:
+        with open("/sys/class/power_supply/battery/capacity") as f:
+            battery_percent = f.read().strip()
+    except FileNotFoundError:
+        battery_percent = "Unavailable"
+    return render(request, 'common/home.html', {'battery_percent':battery_percent})
