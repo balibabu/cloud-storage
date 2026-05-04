@@ -16,6 +16,7 @@ def index(request, folder_id=None):
     
     folders = Folder.objects.filter(user=request.user, parent=current_folder)
     files = UserFile.objects.filter(user=request.user, folder=current_folder)
+    total_ufiles = UserFile.objects.filter(user=request.user)
 
     # Breadcrumbs generation
     breadcrumbs =[]
@@ -29,7 +30,8 @@ def index(request, folder_id=None):
         'folders': folders,
         'files': files,
         'breadcrumbs': breadcrumbs,
-        'total_size': sum([file.file.size for file in files])
+        'total_size': sum([file.file.size for file in total_ufiles]),
+        'folder_size': sum([file.file.size for file in files])
     }
     return render(request, 'filespace/index.html', context)
 

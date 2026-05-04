@@ -36,11 +36,13 @@
     </div>
 </div>
 
-<!-- Total Storage Used -->
+<!-- Storage Info -->
 <div class="text-right text-xs text-gray-400 mb-2">
-    Total used: {{ total_size|filesizeformat }}
+    {% if current_folder %}
+        Folder: {{ folder_size|filesizeformat }} · 
+    {% endif %}
+    Total: {{ total_size|filesizeformat }}
 </div>
-
 
 <!-- Files & Folders Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
