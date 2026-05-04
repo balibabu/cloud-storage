@@ -25,4 +25,4 @@ class Repo(models.Model):
 class GitFile(models.Model):
     filename = models.CharField(max_length=255, unique=True)
     repo = models.CharField(max_length=255)
-    def __str__(self): return f'{self.filename} Repo-{self.repo.split('-')[0]}'
+    def __str__(self): return f'{self.filename} (Repo-{self.repo.split('-')[0]})'

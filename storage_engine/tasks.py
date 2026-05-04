@@ -3,7 +3,7 @@ from celery import shared_task
 from .models import Chunk, UploadStatus
 from github_engine.fileHandler import FileHandler
 
-@shared_task(bind=True, autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 300})
+@shared_task(bind=True, autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 1800})
 def upload_chunk_to_cloud(self, chunk_id):
     chunk = Chunk.objects.get(id=chunk_id)    
     if chunk.status == UploadStatus.COMPLETED: return 

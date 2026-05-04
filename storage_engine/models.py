@@ -28,7 +28,7 @@ class Chunk(models.Model):
     file = models.ForeignKey(File, on_delete=models.CASCADE, related_name="chunks")
     index = models.PositiveIntegerField()
     status = models.CharField(max_length=20, choices=UploadStatus.choices, default=UploadStatus.PENDING)
-    def __str__(self): return f"{self.file.title}-C[{self.index}]-({self.status})"
+    def __str__(self): return f"{self.file.title} [C{self.index}] ({self.status})"
 
     class Meta: 
         unique_together = ('file', 'index')
@@ -40,4 +40,4 @@ class ChunkExecution(models.Model):
     local_path = models.CharField(max_length=500, null=True, blank=True)
     retry_count = models.PositiveIntegerField(default=0)
     last_error = models.TextField(null=True, blank=True)
-    def __str__(self): return f"{self.chunk.file.title}-C[{self.chunk.index}] (retry:{self.retry_count})"
+    def __str__(self): return f"{self.chunk.file.title} [C{self.chunk.index}] (retry:{self.retry_count})"
