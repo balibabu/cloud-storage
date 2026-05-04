@@ -36,6 +36,12 @@
     </div>
 </div>
 
+<!-- Total Storage Used -->
+<div class="text-right text-xs text-gray-400 mb-2">
+    Total used: {{ total_size|filesizeformat }}
+</div>
+
+
 <!-- Files & Folders Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
     <!-- Render Folders -->
@@ -63,9 +69,7 @@
         <div class="flex items-center space-x-3 shrink-0 ml-4">
             <span class="text-[10px] text-gray-400 whitespace-nowrap">{{ userfile.file.size|filesizeformat }}</span>
             
-            {% if userfile.file.status == 'COMPLETED' %}
-                <span class="text-[9px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">DONE</span>
-            {% else %}
+            {% if userfile.file.status != 'COMPLETED' %}
                 <span class="text-[9px] font-bold text-yellow-600 bg-yellow-50 px-1.5 py-0.5 rounded uppercase">{{ userfile.file.status }}</span>
             {% endif %}
 

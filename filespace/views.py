@@ -29,6 +29,7 @@ def index(request, folder_id=None):
         'folders': folders,
         'files': files,
         'breadcrumbs': breadcrumbs,
+        'total_size': sum([file.file.size for file in files])
     }
     return render(request, 'filespace/index.html', context)
 

@@ -36,7 +36,7 @@ class StorageHandler:
 
     def download(file_uid):
         file = get_object_or_404(File, id=file_uid)
-        if file.status != UploadStatus.COMPLETED: return HttpResponse("File is not ready for download.", status=400)
+        if file.status != UploadStatus.COMPLETED: return HttpResponse("File is not ready for download yet.", status=400)
         def file_iterator():
             chunks=file.chunks.all()
             for chunk in chunks:
